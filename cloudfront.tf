@@ -69,7 +69,7 @@ resource "aws_cloudfront_distribution" "self" {
 }
 
 resource "aws_cloudfront_function" "request" {
-  code    = var.request_function_path
+  code    = file(var.request_function_path)
   name    = "indexer"
   runtime = "cloudfront-js-1.0"
   publish = true
