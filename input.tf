@@ -7,7 +7,7 @@ variable "primary_domain_name" {
 }
 
 variable "secondary_domain_names" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
@@ -16,6 +16,6 @@ variable "request_function_path" {
 }
 
 variable "cloudfront_priceclass" {
-  type = string
+  type    = string
   default = "PriceClass_200"
 }

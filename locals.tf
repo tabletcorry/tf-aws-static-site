@@ -1,3 +1,3 @@
 locals {
-  s3_origin_id  = "blogs3origin"
+  s3_origin_id = "blogs3origin"
 }
