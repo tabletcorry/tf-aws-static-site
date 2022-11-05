@@ -10,3 +10,7 @@ variable "secondary_domain_names" {
   type = list(string)
   default = []
 }
+
+variable "request_function_path" {
+  type = string
+}

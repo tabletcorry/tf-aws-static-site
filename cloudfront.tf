@@ -43,11 +43,6 @@ resource "aws_cloudfront_distribution" "self" {
       function_arn = aws_cloudfront_function.request.arn
     }
 
-    /*function_association {
-      event_type   = "viewer-response"
-      function_arn = aws_cloudfront_function.response.arn
-    }*/
-
     response_headers_policy_id = aws_cloudfront_response_headers_policy.self.id
   }
 
@@ -74,15 +69,8 @@ resource "aws_cloudfront_distribution" "self" {
 }
 
 resource "aws_cloudfront_function" "request" {
-  code    = file("${path.module}/request.js")
+  code    = var.request_function_path
   name    = "indexer"
-  runtime = "cloudfront-js-1.0"
-  publish = true
-}
-
-resource "aws_cloudfront_function" "response" {
-  code    = file("${path.module}/response.js")
-  name    = "response"
   runtime = "cloudfront-js-1.0"
   publish = true
 }
