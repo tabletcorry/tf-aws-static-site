@@ -52,7 +52,7 @@ resource "aws_cloudfront_distribution" "self" {
     }
   }
 
-  price_class = "PriceClass_200"
+  price_class = var.cloudfront_priceclass
 
   viewer_certificate {
     acm_certificate_arn      = aws_acm_certificate.cloudfront.arn

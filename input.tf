@@ -14,3 +14,8 @@ variable "secondary_domain_names" {
 variable "request_function_path" {
   type = string
 }
+
+variable "cloudfront_priceclass" {
+  type = string
+  default = "PriceClass_200"
+}
