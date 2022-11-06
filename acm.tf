@@ -7,7 +7,6 @@ resource "aws_acm_certificate" "cloudfront" {
   }
 
   subject_alternative_names = var.secondary_domain_names
-
 }
 
 resource "aws_acm_certificate_validation" "cloudfront" {

@@ -70,9 +70,13 @@ resource "aws_cloudfront_distribution" "self" {
 
 resource "aws_cloudfront_function" "request" {
   code    = file(var.request_function_path)
-  name    = "indexer"
+  name    = "${var.name}-request"
   runtime = "cloudfront-js-1.0"
   publish = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_cloudfront_response_headers_policy" "self" {

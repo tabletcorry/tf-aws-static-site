@@ -19,3 +19,8 @@ variable "cloudfront_priceclass" {
   type    = string
   default = "PriceClass_200"
 }
+
+variable "tags" {
+  type    = map(string)
+  default = {}
+}
