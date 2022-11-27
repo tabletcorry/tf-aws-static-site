@@ -34,7 +34,7 @@ resource "aws_route53_record" "cf_acm" {
   allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
-  ttl             = 60
+  ttl             = 86400
   type            = each.value.type
   zone_id         = data.aws_route53_zone.self.zone_id
 }
