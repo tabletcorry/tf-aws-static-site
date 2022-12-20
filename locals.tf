@@ -4,5 +4,5 @@ locals {
     module          = "tf-aws-static-site"
     module_var_name = var.name
   }
-  tags = merge(local.module_tags, var.tags)
+  tags = merge(var.tags, local.module_tags)
 }
