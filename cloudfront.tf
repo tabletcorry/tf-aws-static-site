@@ -5,6 +5,37 @@ data "aws_cloudfront_cache_policy" "Managed-CachingOptimized" {
   name = "Managed-CachingOptimized"
 }
 
+resource "aws_cloudfront_cache_policy" "mastodon_well_known" {
+  name = "${var.name}-mastodon-well-known"
+  default_ttl = 86400
+  max_ttl     = 86400
+  min_ttl     = 86400
+  parameters_in_cache_key_and_forwarded_to_origin {
+    cookies_config {
+      cookie_behavior = "none"
+    }
+    headers_config {
+      header_behavior = "none"
+    }
+    query_strings_config {
+      query_string_behavior = "all"
+    }
+  }
+}
+
+resource "aws_cloudfront_origin_request_policy" "mastodon_well_known" {
+  name = "${var.name}-mastodon-well-known"
+  cookies_config {
+    cookie_behavior = "none"
+  }
+  headers_config {
+    header_behavior = "none"
+  }
+  query_strings_config {
+    query_string_behavior = "all"
+  }
+}
+
 resource "aws_cloudfront_distribution" "self" {
   origin {
     domain_name = aws_s3_bucket.origin.bucket_regional_domain_name
@@ -12,6 +43,18 @@ resource "aws_cloudfront_distribution" "self" {
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.self.cloudfront_access_identity_path
+    }
+  }
+
+  origin {
+    domain_name = "mastodon.sharpletters.net"
+    origin_id   = "mastodon"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
 
@@ -65,6 +108,19 @@ resource "aws_cloudfront_distribution" "self" {
     error_caching_min_ttl = 86400
     response_page_path    = "/404.html"
     response_code         = 404
+  }
+
+  ordered_cache_behavior {
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "mastodon"
+
+    cache_policy_id = aws_cloudfront_cache_policy.mastodon_well_known.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.mastodon_well_known.id
+
+    path_pattern           = ".well-known/*"
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
   }
 }
 
